@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
-import Messages from '../components/Messages.vue';
 
 
     const message = ref( 'Hello Vue!' );
@@ -108,7 +107,6 @@ import Messages from '../components/Messages.vue';
                             </div>
                           </div>
 
-                        <Messages />
                         
                     </div>
                        
