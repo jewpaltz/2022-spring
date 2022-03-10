@@ -7,6 +7,7 @@ import { useMessages } from "./messages";
 
 const session = reactive({
     user: null as users.User | null,
+    destinationUrl: null as string | null,
 })
 
 export async function Login(handle: string, password: string) {
@@ -27,7 +28,7 @@ export async function Login(handle: string, password: string) {
         });
 
         session.user = user;
-        router.push('/messages');
+        router.push(session.destinationUrl  ?? '/wall');
 
     } catch (error: any) {
         messages.notifications.push({
