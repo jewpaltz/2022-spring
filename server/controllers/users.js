@@ -7,7 +7,7 @@ const userModel = require('../models/user');
 
 app
     .get('/', (req, res) => {
-        res.send(user.list);
+        res.send(userModel.list);
     })
     .get('/:id', (req, res) => {
 
