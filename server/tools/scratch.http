@@ -19,7 +19,7 @@ Content-Type: application/json
   "lastName": "Christian",
   "handle": "newpaltz_benevolent",
   "password": "hugo",
-  "email": "jhon@doe.com",
+  "email": "president@newpaltz.edu",
   "pic": "https://randomuser.me/api/portraits/men/2.jpg"
 }
 
@@ -29,5 +29,15 @@ Content-Type: application/json
 
 {
   "lastName": "Putin III",
+  "password": "Ukraine",
+  "email": "save@ukraine.com"
+}
+
+###
+POST http://localhost:3001/api/users/login
+Content-Type: application/json
+
+{
+  "email": "save@ukraine.com",
   "password": "Ukraine"
 }

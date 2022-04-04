@@ -1,6 +1,7 @@
 /* B"H
 */
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 let hieghstId = 3;
 
@@ -60,6 +61,35 @@ async function update(id, newUser){
     return { ...newUser, password: undefined};
 }
 
+async function login(email, password){
+    const user = list.find(user => user.email === email);
+    if(!user){
+        throw { statusCode: 404, message: 'User not found' };
+    }
+    if(!await bcrypt.compare(password, user.password)){
+        throw { statusCode: 401, message: 'Invalid password' };
+    }
+
+    const data = { ...user, password: undefined };
+    const token = jwt.sign( data, process.env.JWT_SECRET);
+
+    return { ...data, token };
+
+}
+
+function fromToken(token){
+
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if(err){
+                reject(err);
+            }else{
+                resolve(decoded);
+            }
+        });
+    });
+}
+
 module.exports = {
     async create(user) {
         user.id = ++hieghstId;
@@ -72,6 +102,8 @@ module.exports = {
     },
     remove,
     update,
+    login,
+    fromToken,
     get list(){
         return list.map(x=> ({...x, password: undefined }) );
     }
