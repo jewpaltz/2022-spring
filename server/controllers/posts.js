@@ -11,6 +11,10 @@ app
     .get('/', (req, res) => {
         res.send(postModel.list);
     })
+    .get('/wall', (req, res) => {
+
+        res.send(postModel.list.filter(post => post.owner === req.user.id ));
+    })
     .get('/:id', (req, res) => {
 
         const post = postModel.get(req.params.id);
