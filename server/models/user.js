@@ -2,6 +2,9 @@
 */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { db, isConnected, ObjectId } = require('./mongo');
+
+const collection = db.db("gratitude").collection("users");
 
 let hieghstId = 3;
 
@@ -35,15 +38,15 @@ const list = [
     },
 ];
 
-function get(id){
-    return { ...list.find(user => user.id === parseInt(id)), password: undefined };
+async function get(id){
+    const user = await collection.findOne({ _id: new ObjectId(id) });
+    return { ...user, password: undefined };
 }
 
-function remove(id){
-    const index = list.findIndex(user => user.id === parseInt(id));
-    const user = list.splice(index,1);
+async function remove(id){
+    const user = await collection.findOneAndDelete({ _id: new ObjectId(id) });
     
-    return { ...user[0], password: undefined};
+    return { ...user.value , password: undefined};
 }
 
 async function update(id, newUser){
@@ -90,7 +93,15 @@ function fromToken(token){
     });
 }
 
+function seed(){
+    return collection.insertMany(list);
+}
+
+
+
 module.exports = {
+    collection, 
+    seed,
     async create(user) {
         user.id = ++hieghstId;
 
@@ -104,8 +115,8 @@ module.exports = {
     update,
     login,
     fromToken,
-    get list(){
-        return list.map(x=> ({...x, password: undefined }) );
+    async getList(){
+        return (await collection.find().toArray()).map(x=> ({...x, password: undefined }) );
     }
 }
 module.exports.get = get;
