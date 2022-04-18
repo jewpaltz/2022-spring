@@ -3,6 +3,7 @@ import router from "../router";
 
 import * as users from "../models/user";
 import { useMessages } from "./messages";
+import { api } from "./myFetch";
 
 
 const session = reactive({
@@ -10,25 +11,24 @@ const session = reactive({
     destinationUrl: null as string | null,
 })
 
-export async function Login(handle: string, password: string) {
-    const user = users.list.find(u => u.handle === handle);
+export async function Login(email: string, password: string) {
+
     const messages = useMessages();
 
     try {
-        if (!user) {
-            throw { message: "User not found" };
+        
+        const user = await api("users/login", { email, password });
+
+        if(user) {
+
+            messages.notifications.push({
+                type: "success",
+                message: `Welcome back ${user.firstName}!`,
+            });
+
+            session.user = user;
+            router.push(session.destinationUrl  ?? '/wall');
         }
-        if(user.password !== password) {
-            throw { message: "Incorrect password" };
-        } 
-
-        messages.notifications.push({
-            type: "success",
-            message: `Welcome back ${user.firstName}!`,
-        });
-
-        session.user = user;
-        router.push(session.destinationUrl  ?? '/wall');
 
     } catch (error: any) {
         messages.notifications.push({
