@@ -19,6 +19,8 @@ app
             .catch(next);
     })
     .get('/wall/:handle', (req, res, next) => {
+        // if the user is not friends with the requested handle, then return an error
+
         postModel.getWall(req.params.handle)
             .then(posts => res.json({ success: true, errors: [], data: posts }))
             .catch(next);
