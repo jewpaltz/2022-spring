@@ -1,0 +1,42 @@
+
+<script setup lang="ts">
+import { reactive } from 'vue';
+
+
+    const weather = reactive({ data: {} as any});
+        const result = fetch('https://api.coinbase.com/v2/exchange-rates')
+    //const weather = await fetch('https://www.7timer.info/bin/astro.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0')
+                            .then(x=>x.json())
+                            .then(x=>{
+
+                weather.data = Object.entries(x.data.rates);
+                console.log(weather);
+        });
+</script>
+
+<template>
+    <div>
+        <h1>Hello</h1>
+
+
+                    <table class="table">
+            <thead>
+                <tr>
+                    <th>Currency</th>
+                    <th>Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(currency, index) in weather.data" >
+                    <td>{{ currency[0] }}</td>
+                    <td>{{ currency[1] }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</template>
+
+
+<style scoped>
+
+</style>

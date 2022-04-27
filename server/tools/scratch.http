@@ -49,3 +49,9 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3001/api/users/seed
+
+###
+https://api.openweathermap.org/data/2.5/weather?q=London,uk&appid=9783c8f2be7a1d806aff6b1d9b738ea6
+
+###
+https://api.coinbase.com/v2/exchange-rates

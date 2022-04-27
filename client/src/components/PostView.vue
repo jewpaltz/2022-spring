@@ -27,7 +27,7 @@
                               </div>
                           
                               <div class="content">
-                                {{ post.caption }} }} 
+                                {{ post.caption }}
                                 <br />
                                 <a>@bulmaio</a>.
                                 <a href="#">#css</a> <a href="#">#responsive</a>
