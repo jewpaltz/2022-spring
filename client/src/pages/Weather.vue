@@ -1,6 +1,8 @@
-
+<script lang="ts">
+  declare var mapIsReady: Promise<void>;
+</script>
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
 
     const weather = reactive({ data: {} as any});
@@ -13,6 +15,24 @@ import { reactive } from 'vue';
                 weather.data = Object.entries(x.main);
 
         });
+
+    const location = ref<any>({})
+    mapIsReady.then(() => {
+        
+        
+        var request = {
+            query: 'Museum of Contemporary Art',
+            fields: ['name', 'geometry'],
+        };
+
+        var service = new google.maps.places.PlacesService(document.createElement('div'));
+
+        service.findPlaceFromQuery(request, function(results, status) {
+
+            console.log(results);
+            location.value = results![0];
+        });
+    });
 </script>
 
 <template>
@@ -34,6 +54,10 @@ import { reactive } from 'vue';
                 </tr>
             </tbody>
         </table>
+
+        {{ location.name }}
+        {{ location.geometry.location.lat() }}
+        {{ location.geometry.location.lng() }}
     </div>
 </template>
 
