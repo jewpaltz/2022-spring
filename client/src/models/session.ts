@@ -16,10 +16,15 @@ export const useSession = defineStore('session', {
     actions: {
         async GoogleLogin() {
             await loadScript('https://accounts.google.com/gsi/client', 'google-signin');
-            google.accounts.id.initialize({
+            const auth_client = google.accounts.oauth2.initTokenClient({
                 client_id: <string>import.meta.env.VITE_GOOGLE_CLIENT_ID,
-                callback: x =>{
-                    const user = decodeJWT(x.credential);
+                scope: 'email profile',
+                callback: async x =>{
+                    const user = await fetch('https://www.googleapis.com/oauth2/v3/userinfo?alt=json',{
+                        headers: {
+                            Authorization: `Bearer ${x.access_token}`,
+                        },
+                    }).then(x => x.json());
                     console.log(user);
                     this.user = {
                         id: user.sub,
@@ -30,9 +35,16 @@ export const useSession = defineStore('session', {
                         handle: user.email,
                         password: '',
                     }
+
+                    const calendar = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{
+                        headers: {
+                            Authorization: `Bearer ${x.access_token}`,
+                        },
+                    }).then(x => x.json());
+                    console.log(calendar);
                 }
               });
-              google.accounts.id.prompt(()=>{});
+              auth_client.requestAccessToken();
         },
 
         async Login(email: string, password: string) {
