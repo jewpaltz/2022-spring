@@ -13,7 +13,14 @@ app
             .then(posts => res.json({ success: true, errors: [], data: posts }))
             .catch(next);
     })
+    .get('/wall', (req, res, next) => {
+        postModel.getWall(req.user.handle)
+            .then(posts => res.json({ success: true, errors: [], data: posts }))
+            .catch(next);
+    })
     .get('/wall/:handle', (req, res, next) => {
+        // if the user is not friends with the requested handle, then return an error
+
         postModel.getWall(req.params.handle)
             .then(posts => res.json({ success: true, errors: [], data: posts }))
             .catch(next);
@@ -25,6 +32,9 @@ app
 
     })
     .post('/', (req, res, next) => {
+
+        req.body.owner = req.user.handle;
+        
         postModel.create(req.body)
             .then(post => res.status(CREATED_STATUS).json({ success: true, errors: [], data: post }))
             .catch(next);
