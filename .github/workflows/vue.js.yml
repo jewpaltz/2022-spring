@@ -43,7 +43,9 @@ jobs:
           folder: dist/server/public # The folder the action should deploy.
 
     - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4.2.3
+      uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
       with:
-          branch: node-deploy # The branch the action should deploy to.
-          folder: dist # The folder the action should deploy.
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "spring-2022" #Must be unique in Heroku
+          heroku_email: "mplotkin@jewpaltz.com"
+          appdir: dist
