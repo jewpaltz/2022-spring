@@ -31,10 +31,9 @@ jobs:
 
     - name: Copy static files
       run: |
-          mkdir -p dist/server/public/
-          cp -a client/dist/. dist/server/public/
-          cp -a server/. dist/server/
-          cp package.json dist/
+          mkdir -p server/public/
+          cp -a client/dist/. server/public/
+          rm -r client
           
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4.2.3
@@ -46,6 +45,5 @@ jobs:
       uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
       with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "spring-2022-2" #Must be unique in Heroku
+          heroku_app_name: "spring-2022" #Must be unique in Heroku
           heroku_email: "mplotkin@jewpaltz.com"
-          #appdir: ./dist/
