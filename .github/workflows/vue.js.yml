@@ -31,11 +31,12 @@ jobs:
 
     - name: Copy static files
       run: |
-          ls
+          ls -a
+          printenv
           mkdir -p server/public/
           cp -a client/dist/. server/public/
           rm -r client .gitignore
-          ls
+          
           
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4.2.3
