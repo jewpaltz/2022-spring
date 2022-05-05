@@ -1,6 +1,6 @@
 /* B"H
 */
-
+                // Use the enviroment variable to set the base url so that the client can be run on different machines
 const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3001/api/';
 
 export function api(url: string, body?: any, method?: string, headers?: HeadersInit) {
