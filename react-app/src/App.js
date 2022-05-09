@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import logo from './assets/logo.svg';
 import './assets/App.scss';
 import Nav from './components/Nav';
+import useMessages, { MessagesContext } from './models/messages.ts';
 
     const HomePage = () => <>
                                 <h1>Home</h1>
@@ -30,8 +30,10 @@ import Nav from './components/Nav';
 
 
 function App() {
+    const messages = useMessages();
   return (
     <BrowserRouter>
+    <MessagesContext.Provider value={messages}>
     <div className="App">
         <Nav />
       <div className="container">
@@ -47,6 +49,7 @@ function App() {
 
       </div>
     </div>
+    </MessagesContext.Provider>
     </BrowserRouter>
   );
 }
