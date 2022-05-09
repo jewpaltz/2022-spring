@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import logo from './assets/logo.svg';
 import './assets/App.scss';
 import Nav from './components/Nav';
-import useMessages, { MessagesContext } from './models/messages.ts';
+import useSession, { SessionContext } from './models/session.ts';
 
     const HomePage = () => <>
                                 <h1>Home</h1>
@@ -30,10 +30,9 @@ import useMessages, { MessagesContext } from './models/messages.ts';
 
 
 function App() {
-    const messages = useMessages();
+    const session = useSession();
   return (
-    <BrowserRouter>
-    <MessagesContext.Provider value={messages}>
+    <SessionContext.Provider value={session}>
     <div className="App">
         <Nav />
       <div className="container">
@@ -49,8 +48,7 @@ function App() {
 
       </div>
     </div>
-    </MessagesContext.Provider>
-    </BrowserRouter>
+    </SessionContext.Provider>
   );
 }
 

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { useState } from "react";
 
 
 
@@ -23,5 +23,3 @@ export interface Notification {
     type: 'success' | 'danger' | 'info' | 'warning';
     message: string;
 }
-
-export const MessagesContext = createContext({});

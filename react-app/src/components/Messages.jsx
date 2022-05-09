@@ -1,12 +1,10 @@
 
 
     import { useContext, useEffect, useState } from 'react';
-    import { MessagesContext } from '../models/messages.ts';
-    //import useMessages from '../models/messages.ts';
-
+    import { SessionContext } from '../models/session.ts';
 
     export default function Messages() {
-        const messages = useContext(MessagesContext);
+        const { messages } = useContext(SessionContext);
 
         const [isOpen, setIsOpen] = useState(false);
 

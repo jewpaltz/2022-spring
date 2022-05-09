@@ -1,23 +1,29 @@
 
-import router from "../router";
+import { useNavigate } from "react-router-dom";
+import { useState, createContext } from "react";
 
-import * as users from "../models/user";
-import { useMessages } from "./messages";
-import { api } from "./myFetch";
-import { defineStore } from "pinia";
-import { decodeJWT, loadScript } from "./utils";
+import * as users from "./user.ts"
+import useMessages from "./messages.ts";
+import { api } from "./myFetch.ts";
+import { decodeJWT, loadScript } from "./utils.ts";
 
+declare const google: any;
 
-export const useSession = defineStore('session', {
-    state: () => ({
-        user: undefined as users.User | undefined,
-        destinationUrl: null as string | null,
-    }),
-    actions: {
+export default function useSession() {
+
+    const navigate = useNavigate();
+    const messages = useMessages();
+    const [user, setUser] = useState<users.User | undefined>();
+    const [destinationUrl, setDestinationUrl] = useState<string | null>(null);
+    
+    return {
+        user,
+        destinationUrl,
+        messages,
         async GoogleLogin() {
             await loadScript('https://accounts.google.com/gsi/client', 'google-signin');
             const auth_client = google.accounts.oauth2.initTokenClient({
-                client_id: <string>import.meta.env.VITE_GOOGLE_CLIENT_ID,
+                client_id: <string>process.env.REACT_APP_GOOGLE_CLIENT_ID,
                 scope: 'email profile',
                 callback: async x =>{
                     const user = await fetch('https://www.googleapis.com/oauth2/v3/userinfo?alt=json',{
@@ -49,7 +55,6 @@ export const useSession = defineStore('session', {
 
         async Login(email: string, password: string) {
 
-            const messages = useMessages();
         
             try {
                 
@@ -57,17 +62,17 @@ export const useSession = defineStore('session', {
         
                 if(user) {
         
-                    messages.notifications.push({
+                    messages.add({
                         type: "success",
                         message: `Welcome back ${user.firstName}!`,
                     });
         
                     this.user = user;
-                    router.push(this.destinationUrl  ?? '/wall');
+                    navigate(this.destinationUrl  ?? '/wall');
                 }
         
             } catch (error: any) {
-                messages.notifications.push({
+                messages.add({
                     type: "danger",
                     message: error.message,
                 });
@@ -77,11 +82,10 @@ export const useSession = defineStore('session', {
         
         Logout() {
             this.user = undefined;
-            router.push('/login');
+            navigate('/login');
         },
 
         async api(url: string, data?: any, method?: 'GET' | 'POST' | 'PUT' | 'DELETE', headers: any = {}) {
-            const messages = useMessages();
 
             if(this.user?.token) {
                 headers.Authorization = `Bearer ${this.user.token}`;
@@ -94,7 +98,7 @@ export const useSession = defineStore('session', {
                 }
                 return await response.data;                
             } catch (error: any) {
-                messages.notifications.push({
+                messages.add({
                     type: "danger",
                     message: error.message,
                 });
@@ -102,11 +106,13 @@ export const useSession = defineStore('session', {
             }
 
         }
-    },
-})
+    };
+}
 
 export interface ApiResult {
     data: any;
     errors?: string[];
     success: boolean;
 }
+
+export const SessionContext = createContext({});
