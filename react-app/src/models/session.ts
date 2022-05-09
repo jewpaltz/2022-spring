@@ -32,7 +32,7 @@ export default function useSession() {
                         },
                     }).then(x => x.json());
                     console.log(user);
-                    this.user = {
+                    setUser( {
                         id: user.sub,
                         email: user.email,
                         firstName: user.given_name,
@@ -40,7 +40,7 @@ export default function useSession() {
                         pic: user.picture,
                         handle: user.email,
                         password: '',
-                    }
+                    })
 
                     const calendar = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events',{
                         headers: {
@@ -67,7 +67,7 @@ export default function useSession() {
                         message: `Welcome back ${user.firstName}!`,
                     });
         
-                    this.user = user;
+                    setUser( user );
                     navigate(this.destinationUrl  ?? '/wall');
                 }
         
@@ -81,7 +81,7 @@ export default function useSession() {
         },
         
         Logout() {
-            this.user = undefined;
+            setUser(undefined);
             navigate('/login');
         },
 

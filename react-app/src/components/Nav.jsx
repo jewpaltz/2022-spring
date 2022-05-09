@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-//import LoginBadge from './LoginBadge.vue';
+import LoginBadge from './LoginBadge';
 import Messages from './Messages';
 
     //const NavLink = (props) => <a {...props} >{props.children}</a>;
-    const LoginBadge = ()=><></>;
+    //const LoginBadge = ()=><></>;
     //const Messages = ()=><></>;
 
 
