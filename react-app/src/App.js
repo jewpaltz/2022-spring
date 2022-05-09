@@ -3,6 +3,7 @@ import logo from './assets/logo.svg';
 import './assets/App.scss';
 import Nav from './components/Nav';
 import useSession, { SessionContext } from './models/session.ts';
+import LoginPage from './pages/Login';
 
     const HomePage = () => <>
                                 <h1>Home</h1>
@@ -23,7 +24,7 @@ import useSession, { SessionContext } from './models/session.ts';
     ;
     const AboutPage = () => <h1>About</h1>;
     const ContactPage = () => <h1>Contact</h1>;
-    const LoginPage = () => <h1>Login</h1>;
+    //const LoginPage = () => <h1>Login</h1>;
     const WeatherPage = () => <h1>Weather</h1>;
     const WallPage = () => <h1>Wall</h1>;
     const NotFoundPage = () => <h1>404</h1>;
